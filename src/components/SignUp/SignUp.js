@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import GoogleLogo from "../../images/google.svg";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+
+const provider = new GoogleAuthProvider();
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -41,6 +45,18 @@ const SignUp = () => {
     }
 
     createUserWithEmailAndPassword(email, password);
+  };
+
+  const googleAuth = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -91,6 +107,17 @@ const SignUp = () => {
             Login
           </Link>
         </p>
+        <div className="horizontal-divider">
+          <div className="line-left" />
+          <p>or</p>
+          <div className="line-right" />
+        </div>
+        <div className="input-wrapper">
+          <button className="google-auth" onClick={googleAuth}>
+            <img src={GoogleLogo} alt="" />
+            <p> Continue with Google </p>
+          </button>
+        </div>
       </div>
     </div>
   );

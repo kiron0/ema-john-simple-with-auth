@@ -1,8 +1,12 @@
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import React, { useState } from "react";
+import GoogleLogo from "../../images/google.svg";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import auth from "../../firebase.init";
 import "./Login.css";
+
+const provider = new GoogleAuthProvider();
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -29,6 +33,18 @@ const Login = () => {
   const handleUserSignIn = (event) => {
     event.preventDefault();
     signInWithEmailAndPassword(email, password);
+  };
+
+  const googleAuth = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -66,6 +82,17 @@ const Login = () => {
             Create an account
           </Link>
         </p>
+        <div className="horizontal-divider">
+          <div className="line-left" />
+          <p>or</p>
+          <div className="line-right" />
+        </div>
+        <div className="input-wrapper">
+          <button className="google-auth" onClick={googleAuth}>
+            <img src={GoogleLogo} alt="" />
+            <p> Continue with Google </p>
+          </button>
+        </div>
       </div>
     </div>
   );
