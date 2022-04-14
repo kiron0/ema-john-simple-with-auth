@@ -7,7 +7,7 @@ import Cart from '../Cart/Cart';
 import ReviewItem from '../ReviewItem/ReviewItem';
 
 const Orders = () => {
-    const [products, setProducts] = useProducts();
+    const [products] = useProducts();
     const [cart, setCart] = useCart(products);
 
     const handleRemoveProduct = product =>{
@@ -30,7 +30,7 @@ const Orders = () => {
             <div className="cart-container">
                 <Cart cart={cart}>
                     <Link to="/inventory">
-                        <button>Proceed Checkout </button>
+                        <button className='btn2'>Proceed Checkout </button>
                     </Link>
                 </Cart>
             </div>
